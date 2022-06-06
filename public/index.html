@@ -1,89 +1,189 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/9.8.2/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/9.8.2/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/9.8.2/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/9.8.2/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/9.8.2/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/9.8.2/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/9.8.2/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/9.8.2/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/9.8.2/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/9.8.2/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+  <title>Zero to Hero Tech Academy Web App</title>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
-    </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-main>
+        <v-container>
+            
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-  </body>
+            <template>
+                <v-card
+                  :loading="loading"
+                  class="mx-auto my-12"
+                  max-width="374"
+                >
+                  <template slot="progress">
+                    <v-progress-linear
+                      color="deep-purple"
+                      height="10"
+                      indeterminate
+                    ></v-progress-linear>
+                  </template>
+              
+                  <v-img
+                    height="250"
+                    src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+                  ></v-img>
+              
+                  <v-card-title>Restaurant ng mga Gwapo</v-card-title>
+              
+                  <v-card-text>
+                    <v-row
+                      align="center"
+                      class="mx-0"
+                    >
+                      <v-rating
+                        :value="3"
+                        color="amber"
+                        dense
+                        half-increments
+                        readonly
+                        size="14"
+                      ></v-rating>
+              
+                      <div class="grey--text ms-4">
+                        3 (195)
+                      </div>
+                    </v-row>
+              
+                    <div class="my-4 text-subtitle-1">
+                        ₱ • Puerto Princesa City, DICT
+                    </div>
+              
+                    <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
+                  </v-card-text>
+              
+                  <v-divider class="mx-4"></v-divider>
+              
+                  <v-card-title>Tonight's availability</v-card-title>
+              
+                  <v-card-text>
+                    <v-chip-group
+                      v-model="selection"
+                      active-class="deep-purple accent-4 white--text"
+                      column
+                    >
+                      <v-chip>5:30PM</v-chip>
+              
+                      <v-chip>7:30PM</v-chip>
+              
+                      <v-chip>8:00PM</v-chip>
+              
+                      <v-chip>9:00PM</v-chip>
+                    </v-chip-group>
+                  </v-card-text>
+              
+                  <v-card-actions>
+                    <v-btn
+                      color="deep-purple lighten-2"
+                      text
+                      @click="reserve"
+                    >
+                      Reserve
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+
+              <template>
+                <div class="text-center">
+                  <v-dialog
+                    v-model="dialog"
+                    width="500"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        color="red lighten-2"
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        Click Me
+                      </v-btn>
+                    </template>
+
+              
+                    <v-card>
+                      <v-card-title class="text-h5 grey lighten-2">
+                        Privacy Policy
+                      </v-card-title>
+              
+                      <v-card-text>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                      </v-card-text>
+              
+                      <v-divider></v-divider>
+              
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="primary"
+                          text
+                          @click="dialog = false"
+                        >
+                          I accept
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </div>
+              </template>
+
+              <template>
+                <v-carousel hide-delimiters>
+                  <v-carousel-item
+                    v-for="(item,i) in items"
+                    :key="i"
+                    :src="item.src"
+                  ></v-carousel-item>
+                </v-carousel>
+              </template>
+
+
+
+        </v-container>
+      </v-main>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data () {
+                return {
+                items: [
+                    {
+                    src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+                    },
+                    {
+                    src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+                    },
+                    {
+                    src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+                    },
+                    {
+                    src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+                    },
+                ],
+                }
+            },
+    })
+  </script>
+
+
+</body>
 </html>

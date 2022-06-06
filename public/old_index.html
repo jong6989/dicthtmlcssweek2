@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Zero to Hero Tech Academy Web App</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/9.8.2/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/9.8.2/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.8.2/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/9.8.2/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.8.2/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/9.8.2/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/9.8.2/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/9.8.2/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/9.8.2/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/9.8.2/firebase-performance-compat.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    
+  </head>
+
+  <body>
+
+    <div id="message">
+      <h2>Yehey!! i got my First Website!</h2>
+      <h1>im now very happy!</h1>
+      <p>This is a paragrahp HTML TAG</p>
+      <a target="_blank" href="https://www.facebook.com/groups/zerotoherotechacademy/">Zero to Hero FB Group</a>
+      <br>
+      <a href="https://github.com/jong6989/dicthtmlcssweek2" >
+        Click this to open our Repository
+      </a>
+    </div>
+
+  </body>
+
+  <script>
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5U2gNwyBfDmTjW5FyYnbym-rGcOnQalA",
+      authDomain: "zerotoherotechacademy.firebaseapp.com",
+      projectId: "zerotoherotechacademy",
+      storageBucket: "zerotoherotechacademy.appspot.com",
+      messagingSenderId: "608849271131",
+      appId: "1:608849271131:web:7440745ac3eda0fafbe27e",
+      measurementId: "G-H9RPCV6CKE"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+
+</html>
