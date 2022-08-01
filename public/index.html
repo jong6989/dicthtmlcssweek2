@@ -28,25 +28,34 @@
               >
                 <v-toolbar-title>Classroom Management System</v-toolbar-title>
               </v-toolbar>
+
+              <!-- TABS -->
               <v-tabs vertical>
+                <!-- tab menu -->
                 <v-tab>
                   <v-icon left>
                     mdi-account-multiple
                   </v-icon>
                   Students
                 </v-tab>
+
+                <!-- tab menu -->
                 <v-tab>
                   <v-icon left>
                     mdi-arrange-send-backward
                   </v-icon>
                   Courses
                 </v-tab>
+
+                <!-- tab menu -->
                 <v-tab>
                   <v-icon left>
                     mdi-axis-arrow
                   </v-icon>
                   Sections
                 </v-tab>
+
+                <!-- tab menu -->
                 <v-tab>
                   <v-icon left>
                     mdi-beaker-check
@@ -54,6 +63,7 @@
                   Subjects
                 </v-tab>
           
+                <!-- Tab ITEM -->
                 <v-tab-item>
                   <v-card flat>
                     <v-card-text>
@@ -69,7 +79,7 @@
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
-                            class="mx-2"
+                            class="ma-2"
                             fab
                             dark
                             small
@@ -91,7 +101,6 @@
                               <v-row>
                                 
                                 <!-- Student FORM -->
-
                                 <template>
 
                                   <v-col cols="12" >
@@ -134,7 +143,7 @@
                                   </v-col>
                                   
                                 </template>
-
+                                <!-- End Student FORM -->
 
                               </v-row>
                             </v-container>
@@ -159,76 +168,157 @@
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
+                      <!-- END DIALOG for CERATE STUDENT -->
                       
-                      <v-list two-line>
-                        <v-list-item-group
-                          v-model="selected"
-                          multiple
-                        >
-                          <template v-for="(item, index) in students">
-                            <v-list-item :key="item.id">
-                              <template v-slot:default="{ active }">
-                                <v-list-item-content>
-                                  <v-list-item-title v-text="item.student_id"></v-list-item-title>
-                  
-                                  <v-list-item-subtitle
-                                    class="text--primary"
-                                    v-text="item.full_name"
-                                  ></v-list-item-subtitle>
-                  
-                                  <v-list-item-subtitle v-text="item.address"></v-list-item-subtitle>
-                                </v-list-item-content>
-                  
-                                <v-list-item-action>
-
-                                  <v-list-item-action-text v-text="item.gender"></v-list-item-action-text>
-                  
-                                  <v-list-item-action-text v-text="item.birth_date"></v-list-item-action-text>
-
-                                </v-list-item-action>
-                              </template>
-                            </v-list-item>
-                  
-                            <v-divider
-                              v-if="index < students.length - 1"
-                              :key="index"
-                            ></v-divider>
-                          </template>
-                        </v-list-item-group>
-                      </v-list>
+                      <!-- List of Students -->
+                      <template>
+                        <v-expansion-panels>
+                          <v-expansion-panel
+                            v-for="(item, index) in students"
+                            :key="i"
+                          >
+                            <v-expansion-panel-header>
+                              {{item.full_name}}, {{item.gender}}
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              Address: {{item.address}}
+                              <br>
+                              Birth Date: {{item.birth_date}}
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
+                      </template>
+                      <!-- End List of Students -->
 
 
-
+                      
 
 
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
+
+                <!-- Scond TAB - COURSES -->
                 <v-tab-item>
                   <v-card flat>
                     <v-card-text>
-                      <p>
-                        Morbi nec metus. Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, vitae iaculis lacus elit id tortor. Sed mollis, eros et ultrices tempus, mauris ipsum aliquam libero, non adipiscing dolor urna a orci. Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet, leo. Nunc sed turpis.
-                      </p>
-          
-                      <p>
-                        Suspendisse feugiat. Suspendisse faucibus, nunc et pellentesque egestas, lacus ante convallis tellus, vitae iaculis lacus elit id tortor. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. In hac habitasse platea dictumst. Fusce ac felis sit amet ligula pharetra condimentum.
-                      </p>
-          
-                      <p>
-                        Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Nam commodo suscipit quam. In consectetuer turpis ut velit. Sed cursus turpis vitae tortor. Aliquam eu nunc.
-                      </p>
-          
-                      <p>
-                        Etiam ut purus mattis mauris sodales aliquam. Ut varius tincidunt libero. Aenean viverra rhoncus pede. Duis leo. Fusce fermentum odio nec arcu.
-                      </p>
-          
-                      <p class="mb-0">
-                        Donec venenatis vulputate lorem. Aenean viverra rhoncus pede. In dui magna, posuere eget, vestibulum et, tempor auctor, justo. Fusce commodo aliquam arcu. Suspendisse enim turpis, dictum sed, iaculis a, condimentum nec, nisi.
-                      </p>
+
+                      <!-- DIALOG for CREATE COUSE -->
+                      <v-dialog
+                        v-model="course_dialog"
+                        persistent
+                        max-width="600px"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            class="ma-2"
+                            fab
+                            dark
+                            small
+                            v-bind="attrs"
+                            v-on="on"
+                            color="indigo"
+                          >
+                            <v-icon dark>
+                              mdi-plus
+                            </v-icon>
+                          </v-btn>
+                        </template>
+                        <v-card>
+                          <v-card-title>
+                            <span class="text-h5">Add New Course</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+                              <v-row>
+                                
+                                <!-- Course FORM -->
+                                <template>
+
+                                  <v-col cols="12" >
+                                    <v-form
+                                      ref="course_form"
+                                      v-model="valid"
+                                      lazy-validation
+                                    >
+                                      <v-text-field
+                                        v-model="new_course.course_id"
+                                        label="Course ID"
+                                        required
+                                      ></v-text-field>
+
+                                      
+                                      <v-text-field
+                                        v-model="new_course.name"
+                                        label="Name"
+                                        required
+                                      ></v-text-field>
+                                  
+                                      <v-text-field
+                                        v-model="new_course.description"
+                                        label="Description"
+                                        required
+                                      ></v-text-field>
+
+                                  
+                                  
+                                    </v-form>
+                                  </v-col>
+                                  
+                                </template>
+                                <!-- End course FORM -->
+
+                              </v-row>
+                            </v-container>
+                            <small>*indicates required field</small>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              color="blue darken-1"
+                              text
+                              @click="course_dialog = false"
+                            >
+                              Close
+                            </v-btn>
+                            <v-btn
+                              color="blue darken-1"
+                              text
+                              @click="save_course"
+                            >
+                              Save
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                      <!-- END DIALOG for CREATE COURSE -->
+
+                      
+                      <!-- List of Courses -->
+                      <template>
+                        <v-expansion-panels>
+                          <v-expansion-panel
+                            v-for="(item, index) in courses"
+                            :key="item.id"
+                          >
+                            <v-expansion-panel-header>
+                              {{item.name}} : {{item.course_id}}
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              Document ID: {{item.id}}
+                              <br>
+                              Description: {{item.description}}
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
+                      </template>
+                      <!-- End List of Students -->
+
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
+
+                <!-- 3rd TAB - Sections -->
                 <v-tab-item>
                   <v-card flat>
                     <v-card-text>
@@ -326,6 +416,28 @@
             //clear form
             v.new_student = {};
         },
+        save_course : ()=>{
+
+            console.log("data",{
+                    course_id : v.new_course.course_id,
+                    name : v.new_course.name,
+                    description : v.new_course.description,
+                  });
+
+
+            //add data to database
+            db.collection("course").add({
+                    course_id : v.new_course.course_id,
+                    name : v.new_course.name,
+                    description : v.new_course.description,
+                  })
+
+            //close dialog
+            v.course_dialog = false;
+
+            //clear form
+            v.new_course = {};
+        },
         addImage : ()=>{
           Swal.fire({
             title: 'Add image URL',
@@ -361,8 +473,10 @@
                   sections: [],
                   subjects: [],
                   student_dialog: false,
+                  course_dialog: false,
                   valid: true,
                   new_student: {},
+                  new_course: {},
                   select: null,
                 }
             },
@@ -378,6 +492,16 @@
         console.log("list",list);
     });
 
+    db.collection("course").onSnapshot((response) => {
+        let list = response.docs.map( doc =>{
+          var n = doc.data();
+          n.id = doc.id;
+          return n;
+        } );
+
+        v.courses = list;
+        console.log("courses",list);
+    });
 
 
   </script>
