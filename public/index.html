@@ -5,9 +5,10 @@
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" integrity="sha384-X8QTME3FCg1DLb58++lPvsjbQoCT9bp3MsUU3grbIny/3ZwUJkRNO8NPW6zqzuW9" crossorigin="anonymous">
   <title>Zero to Hero Tech Academy Web App</title>
 
+  
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
@@ -184,6 +185,13 @@
                               Address: {{item.address}}
                               <br>
                               Birth Date: {{item.birth_date}}
+                              <br>
+                              Courses: {{ (item.courses)? item.courses?.length : 0 }}
+                              <v-btn 
+                                @click="select_student(item)"
+                                x-small color="info">
+                                <i class="fa fa-plus"></i>
+                              </v-btn>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
                         </v-expansion-panels>
@@ -312,7 +320,7 @@
                           </v-expansion-panel>
                         </v-expansion-panels>
                       </template>
-                      <!-- End List of Students -->
+                      <!-- End List of Courses -->
 
                     </v-card-text>
                   </v-card>
@@ -335,6 +343,84 @@
               </v-tabs>
             </v-card>
           </template>
+
+
+
+
+
+          <!-- DIALOG for List of COURSES -->
+          <v-dialog
+            v-model="select_course_dialog"
+            persistent
+            max-width="600px" 
+            v-if="selected_student !== null"
+          >
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">{{selected_student.student_id}}:  {{selected_student.full_name}}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    
+                    <!-- Select Course FORM -->
+                    <template >
+
+                      <v-col cols="12" >
+                        <v-form
+                          ref="course_form"
+                          v-model="valid"
+                          lazy-validation
+                        >
+                          
+                          <!-- List of Courses -->
+                          <v-list >
+                            <template 
+                                v-for="(item, index) in courses"
+                                v-if="!check_course_if_exist(item.course_id)">
+
+                              <v-list-item 
+                                :key="item.id" 
+                                @click="add_course_to_student(item.course_id,item.name)"
+                                
+                              >
+                                <div >
+                                  {{item.name}} : {{item.course_id}}
+                                </div>
+                                
+                              </v-list-item>
+                                
+                              <v-divider
+                                :key="index"
+                              ></v-divider>
+
+                            </template>
+                          </v-list>
+                          
+                          <!-- End List of Courses -->
+                      
+                        </v-form>
+                      </v-col>
+                      
+                    </template>
+                    <!-- End Select course FORM -->
+
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="select_course_dialog = false"
+                >
+                  Close
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <!-- END DIALOG for List of COURSES -->
 
 
         </v-container>
@@ -394,6 +480,61 @@
       el: '#app',
       vuetify: new Vuetify(),
       methods: {
+        add_course_to_student: (course_id, course_name)=>{
+          Swal.fire({
+            title: 'Adding ' + course_name + " to " + v.selected_student.full_name,
+            text: "Confirm?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+
+              console.log("adding selected_student",v.selected_student);
+
+              db.collection("students").doc(v.selected_student.id).update({
+                "courses" : firebase.firestore.FieldValue.arrayUnion(course_id)
+              }).then( ()=>{
+
+                //update course student list count
+                db.collection("settings").doc(course_id).update(
+                  {
+                    "students": firebase.firestore.FieldValue.increment(1)
+                  }
+                );
+
+                //add student per course
+                v.selected_student.course = course_id;
+                db.collection("student_per_course").add(v.selected_student);
+
+                v.selected_student = null; //reset data
+                v.select_course_dialog = false; // close dialog
+                Swal.fire(
+                  'Added!',
+                  'Course is added.',
+                  'success'
+                );
+              } );
+
+              
+            }
+          })
+        },
+        check_course_if_exist: (compare)=>{
+          let list = v.selected_student.courses;
+          if(list == undefined){
+            return false;
+          }else {
+            return list.includes(compare);
+          }
+        },
+        select_student: (student)=>{
+          v.selected_student = student; // set selected student
+          v.select_course_dialog = true; // show select course dialog
+        },
         save_student : ()=>{
             console.log("data",{
                     student_id : v.new_student.student_id,
@@ -404,12 +545,20 @@
                   });
             //add data to database
             db.collection("students").add({
-                    student_id : v.new_student.student_id,
-                    full_name : v.new_student.full_name,
-                    gender : v.new_student.gender,
-                    address : v.new_student.address,
-                    birth_date : v.new_student.birth_date
-                  })
+              student_id : v.new_student.student_id,
+              full_name : v.new_student.full_name,
+              gender : v.new_student.gender,
+              address : v.new_student.address,
+              birth_date : v.new_student.birth_date
+            }).then( ()=>{
+              //update student list count
+              let d = {
+                    "count": firebase.firestore.FieldValue.increment(1)
+                  };
+              d[v.new_student.gender] = firebase.firestore.FieldValue.increment(1);
+              db.collection("settings").doc("students").update(d);
+            } );
+
             //close dialog
             v.student_dialog = false;
 
@@ -474,9 +623,11 @@
                   subjects: [],
                   student_dialog: false,
                   course_dialog: false,
+                  select_course_dialog: false,
                   valid: true,
                   new_student: {},
                   new_course: {},
+                  selected_student: null,
                   select: null,
                 }
             },
@@ -485,11 +636,12 @@
 
     db.collection("students").onSnapshot((response) => {
         let list = response.docs.map( doc =>{
-          return doc.data();
+          let d = doc.data();
+          d.id = doc.id;
+          return d;
         } );
 
         v.students = list;
-        console.log("list",list);
     });
 
     db.collection("course").onSnapshot((response) => {
@@ -500,7 +652,6 @@
         } );
 
         v.courses = list;
-        console.log("courses",list);
     });
 
 
